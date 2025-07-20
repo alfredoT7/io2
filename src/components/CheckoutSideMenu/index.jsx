@@ -35,6 +35,7 @@ const CheckoutSideMenu = () => {
                   title={product.title}
                   image={product.image}
                   price={product.price}
+                  quantity={product.quantity}
                   onDelete={id => handleDelete(id)}
                 />
               </div>
@@ -55,10 +56,10 @@ const CheckoutSideMenu = () => {
               </p>
             </div>
             
-            <Link to="/my-orders/last">
+            <Link to="/checkout">
               <button
                 className="bg-green-600 hover:bg-green-700 py-4 text-white w-full rounded-lg font-semibold text-lg transition-colors duration-200 shadow-lg"
-                onClick={() => handleCheckout()}
+                onClick={() => closeCheckoutSideMenu()}
                 type="button"
               >
                 Proceder al Pago

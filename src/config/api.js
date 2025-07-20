@@ -16,9 +16,9 @@ export const API_CONFIG = {
       DELETE: '/api/productos'
     },
     ORDERS: {
-      CREATE: '/api/orders',
-      LIST: '/api/orders',
-      DETAIL: '/api/orders'
+      CREATE: '/api/compras',
+      LIST: '/api/compras/usuario',
+      DETAIL: '/api/compras'
     }
   }
 }
@@ -53,10 +53,19 @@ export const apiRequest = async (endpoint, options = {}) => {
   return response.json();
 };
 
-// Función específica para obtener productos
-export const getProducts = async () => {
+// Función específica para crear una compra
+export const createPurchase = async (purchaseData) => {
   try {
-    const response = await fetch(buildApiUrl('/api/productos'));
+    const token = localStorage.getItem('token');
+    
+    const response = await fetch(buildApiUrl('/api/compras'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(purchaseData)
+    });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -64,7 +73,54 @@ export const getProducts = async () => {
     
     return response.json();
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error creating purchase:', error);
+    throw error;
+  }
+};
+
+// Función específica para obtener compras del usuario
+export const getUserPurchases = async (userId) => {
+  try {
+    const token = localStorage.getItem('token');
+    
+    const response = await fetch(buildApiUrl(`/api/compras/usuario/${userId}`), {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching user purchases:', error);
+    throw error;
+  }
+};
+
+// Función específica para obtener productos
+export const getProducts = async () => {
+  try {
+    const url = buildApiUrl('/api/productos');
+    console.log('🔍 Fetching products from:', url);
+    
+    const response = await fetch(url);
+    
+    console.log('📡 Response status:', response.status);
+    console.log('📡 Response ok:', response.ok);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('📦 Products received:', data);
+    
+    return data;
+  } catch (error) {
+    console.error('❌ Error fetching products:', error);
     throw error;
   }
 };

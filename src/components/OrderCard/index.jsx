@@ -7,6 +7,7 @@ const OrderCard = props => {
     title,
     image,
     price,
+    quantity,
     onDelete
   } = props;
 
@@ -16,10 +17,22 @@ const OrderCard = props => {
         <figure className="w-20 h-20">
           <img className="w-full h-full rounded-lg object-cover" src={image} alt={title} />
         </figure>
-        <p className="text-sm font-light">{title}</p>
+        <div>
+          <p className="text-sm font-light">{title}</p>
+          {quantity && (
+            <p className="text-xs text-gray-500">Cantidad: {quantity}</p>
+          )}
+        </div>
       </div>
       <div className="flex items-center gap-2">
-        <p className="text-lg font-medium">{price}</p>
+        <div className="text-right">
+          <p className="text-lg font-medium">${price}</p>
+          {quantity && (
+            <p className="text-sm text-gray-500">
+              Total: ${(price * quantity).toFixed(2)}
+            </p>
+          )}
+        </div>
         {onDelete && <XMarkIcon
           className="h-6 w-6 text-black cursor-pointer"
           onClick={() => onDelete(id)}

@@ -31,10 +31,12 @@ export const ShoppingCartProvider = ({ children }) => {
     // Fetch products from API
     const fetchProducts = async () => {
       try {
+        console.log('🚀 Starting to fetch products...');
         const products = await getProducts();
+        console.log('✅ Products fetched successfully:', products);
         setItems(products);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('❌ Error fetching products:', error);
         toast.error('Error al cargar los productos');
         setItems([]);
       }

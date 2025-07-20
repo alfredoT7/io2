@@ -19,13 +19,9 @@ const SellerProtectedRoute = ({ children }) => {
       </Layout>
     )
   }
-
-  // Si no está autenticado, redirigir al login
   if (!isAuthenticated) {
     return <Navigate to="/signin" replace />
   }
-
-  // Si no es vendedor, mostrar mensaje de acceso denegado
   if (user?.tipoUsuario !== 'vendedor') {
     return (
       <Layout>

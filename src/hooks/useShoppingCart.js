@@ -17,9 +17,12 @@ const useShoppingCart = () => {
 
   const handleDelete = id => {
     const filteredProducts = cartProducts.filter(product => product.id !== id);
-
+    
     setCartProducts(filteredProducts);
-    setCounter(prev => prev -= 1);
+    
+    // Recalcular contador basado en cantidades
+    const newCounter = filteredProducts.reduce((total, product) => total + (product.quantity || 1), 0);
+    setCounter(newCounter);
   }
   
   const handleCheckout = () => {
@@ -45,18 +48,31 @@ const useShoppingCart = () => {
 
   const addProductToCart = (event, data) => {
     event.stopPropagation();
-    setCounter((prev) => prev + 1);
-
+    
     const newProducts = [...cartProducts];
-    newProducts.push(data);
+    
+    // Verificar si el producto ya existe en el carrito
+    const existingProductIndex = newProducts.findIndex(product => product.id === data.id);
+    
+    if (existingProductIndex >= 0) {
+      // Si existe, aumentar cantidad
+      newProducts[existingProductIndex].quantity = (newProducts[existingProductIndex].quantity || 1) + 1;
+    } else {
+      // Si no existe, agregarlo con cantidad 1
+      newProducts.push({
+        ...data,
+        quantity: 1
+      });
+    }
 
+    setCounter(newProducts.reduce((total, product) => total + (product.quantity || 1), 0));
     setCartProducts(newProducts);
     closeProductDetail();
     openCheckoutSideMenu();
   };
 
   const getTotalPrice = (products) => {
-    return products.reduce((sum, product) => sum + product.price, 0);
+    return products.reduce((sum, product) => sum + (product.price * (product.quantity || 1)), 0);
   };
   
   return {

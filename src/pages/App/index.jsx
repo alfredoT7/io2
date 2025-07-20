@@ -10,6 +10,7 @@ import { NotFound } from "../NotFound";
 import { SignIn } from "../SignIn";
 import { Register } from "../Register";
 import { CreateProduct } from "../CreateProduct";
+import { Checkout } from "../Checkout";
 import { Navbar } from "../../components/Navbar";
 import { ProtectedRoute } from "../../components/ProtectedRoute";
 import { SellerProtectedRoute } from "../../components/SellerProtectedRoute";
@@ -28,6 +29,14 @@ const AppRoutes = () => {
         <SellerProtectedRoute>
           <CreateProduct />
         </SellerProtectedRoute>
+      ) 
+    },
+    { 
+      path: "/checkout", 
+      element: (
+        <ProtectedRoute>
+          <Checkout />
+        </ProtectedRoute>
       ) 
     },
     { path: "/:category", element: <Home /> },
