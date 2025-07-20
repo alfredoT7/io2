@@ -153,7 +153,10 @@ function SignIn() {
               <button
                 type="button"
                 className="font-medium text-sm text-green-600 hover:text-green-500"
-                onClick={() => alert('Funcionalidad de recuperación de contraseña próximamente')}
+                onClick={() => toast.info('Funcionalidad próximamente', {
+                  description: 'La recuperación de contraseña estará disponible pronto',
+                  duration: 3000,
+                })}
               >
                 ¿Olvidaste tu contraseña?
               </button>

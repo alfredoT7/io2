@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState, useCallback } from 'react'
-import { staticProducts } from '../api';
+import { getProducts } from '../config/api';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useAuth } from '../hooks/useAuth';
+import { toast } from 'sonner';
 
 export const ShoppingCartContext = createContext()
 
@@ -27,8 +28,19 @@ export const ShoppingCartProvider = ({ children }) => {
   const closeCheckoutSideMenu = () => setIsCheckoutSideMenu(false);
 
   useEffect(() => {
-    // Use static products instead of API call
-    setItems(staticProducts);
+    // Fetch products from API
+    const fetchProducts = async () => {
+      try {
+        const products = await getProducts();
+        setItems(products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        toast.error('Error al cargar los productos');
+        setItems([]);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const [items, setItems] = useState([]);
@@ -79,6 +91,19 @@ export const ShoppingCartProvider = ({ children }) => {
     isSignIn
   } = useLocalStorage();
 
+  // Function to refresh products
+  const refreshProducts = async () => {
+    try {
+      const products = await getProducts();
+      setItems(products);
+      return products;
+    } catch (error) {
+      console.error('Error refreshing products:', error);
+      toast.error('Error al actualizar los productos');
+      return [];
+    }
+  };
+
   return (
     <ShoppingCartContext.Provider value={{
       counter,
@@ -105,6 +130,7 @@ export const ShoppingCartProvider = ({ children }) => {
       searchCategory,
       setSearchCategory,
       updateCategoryPath,
+      refreshProducts,
       // Auth
       user: auth.user,
       token: auth.token,

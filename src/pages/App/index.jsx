@@ -9,8 +9,10 @@ import { MyOrders } from "../MyOrders";
 import { NotFound } from "../NotFound";
 import { SignIn } from "../SignIn";
 import { Register } from "../Register";
+import { CreateProduct } from "../CreateProduct";
 import { Navbar } from "../../components/Navbar";
 import { ProtectedRoute } from "../../components/ProtectedRoute";
+import { SellerProtectedRoute } from "../../components/SellerProtectedRoute";
 import { Toaster } from 'sonner';
 import "./App.css";
 import { CheckoutSideMenu } from "../../components/CheckoutSideMenu";
@@ -20,6 +22,14 @@ const AppRoutes = () => {
     { path: "/", element: <LandingPage /> },
     { path: "/ventas", element: <Home /> },
     { path: "/nosotros", element: <AboutUs /> },
+    { 
+      path: "/crear-producto", 
+      element: (
+        <SellerProtectedRoute>
+          <CreateProduct />
+        </SellerProtectedRoute>
+      ) 
+    },
     { path: "/:category", element: <Home /> },
     { 
       path: "/my-account", 

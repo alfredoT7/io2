@@ -19,6 +19,9 @@ function Home() {
   // Debug temporal
   console.log('Home component:', { searchValue, filteredItemsCount: filteredItems?.length, totalItems: items?.length });
 
+  // Loading state
+  const isLoading = !items || items.length === 0;
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-8">
       <div className="mb-6 text-center">
@@ -37,16 +40,25 @@ function Home() {
         />
       </div>
       
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
-        {filteredItems?.map((item) => (
-          <Card key={item.id} data={item} />
-        ))}
-      </div>
-      
-      {filteredItems.length === 0 && (
+      {isLoading ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No hay productos disponibles</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+          <p className="text-gray-500 text-lg mt-4">Cargando productos...</p>
         </div>
+      ) : (
+        <>
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
+            {filteredItems?.map((item) => (
+              <Card key={item.id} data={item} />
+            ))}
+          </div>
+          
+          {filteredItems.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No hay productos disponibles</p>
+            </div>
+          )}
+        </>
       )}
       
       <ProductDetail />

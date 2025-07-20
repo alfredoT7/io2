@@ -1,4 +1,4 @@
-import { ShoppingBagIcon, UserIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
+import { ShoppingBagIcon, UserIcon, ArrowRightOnRectangleIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { ShoppingCartContext } from "../../Context";
 import { NavItem } from "../NavItem";
 import { useContext, useState } from "react";
@@ -11,6 +11,7 @@ const Navbar = () => {
     counter,
     updateCategoryPath,
     setSearchValue,
+    openCheckoutSideMenu,
     // New auth system
     isAuthenticated,
     user,
@@ -116,6 +117,19 @@ const Navbar = () => {
                 {user?.tipoUsuario || 'usuario'}
               </span>
             </li>
+
+            {/* Crear Producto (Solo Vendedores) */}
+            {user?.tipoUsuario === 'vendedor' && (
+              <li className="cursor-pointer text-xs sm:text-sm">
+                <Link 
+                  to="/crear-producto"
+                  className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 transition-colors"
+                >
+                  <PlusIcon className="w-4 h-4" />
+                  <span className="hidden sm:inline">Crear Producto</span>
+                </Link>
+              </li>
+            )}
             
             {/* Logout Button */}
             <li className="cursor-pointer text-xs sm:text-sm">
@@ -131,7 +145,11 @@ const Navbar = () => {
           </>
         )}
         
-        <li className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-full">
+        <li 
+          className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-full cursor-pointer hover:bg-green-200 transition-colors"
+          onClick={openCheckoutSideMenu}
+          title="Abrir carrito de compras"
+        >
           <ShoppingBagIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600"/>
           <span className="text-xs sm:text-sm font-medium text-green-600">{counter}</span>
         </li>

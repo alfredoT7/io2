@@ -9,11 +9,11 @@ export const API_CONFIG = {
       LOGOUT: '/api/auth/logout'
     },
     PRODUCTS: {
-      LIST: '/api/products',
-      DETAIL: '/api/products',
-      CREATE: '/api/products',
-      UPDATE: '/api/products',
-      DELETE: '/api/products'
+      LIST: '/api/productos',
+      DETAIL: '/api/productos',
+      CREATE: '/api/productos',
+      UPDATE: '/api/productos',
+      DELETE: '/api/productos'
     },
     ORDERS: {
       CREATE: '/api/orders',
@@ -28,34 +28,43 @@ export const buildApiUrl = (endpoint) => {
   return `${API_CONFIG.BASE_URL}${endpoint}`
 }
 
-// Helper function para hacer requests con token
+// Función para hacer peticiones autenticadas
 export const apiRequest = async (endpoint, options = {}) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token');
   
-  const defaultHeaders = {
-    'Content-Type': 'application/json',
-  }
-
-  if (token) {
-    defaultHeaders.Authorization = `Bearer ${token}`
-  }
-
   const config = {
-    ...options,
     headers: {
-      ...defaultHeaders,
-      ...options.headers,
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` })
     },
+    ...options
+  };
+
+  if (options.body && typeof options.body === 'object') {
+    config.body = JSON.stringify(options.body);
   }
 
-  const response = await fetch(buildApiUrl(endpoint), config)
+  const response = await fetch(buildApiUrl(endpoint), config);
   
-  // Si el token expiró, redirigir al login
-  if (response.status === 401) {
-    localStorage.removeItem('token')
-    localStorage.removeItem('usuario')
-    window.location.href = '/signin'
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
+  
+  return response.json();
+};
 
-  return response
-}
+// Función específica para obtener productos
+export const getProducts = async () => {
+  try {
+    const response = await fetch(buildApiUrl('/api/productos'));
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
+};

@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Layout } from '../../components/Layout'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { buildApiUrl, API_CONFIG } from '../../config/api'
+import { ShoppingCartContext } from '../../Context'
 
 function Register() {
   const navigate = useNavigate()
+  const { login } = useContext(ShoppingCartContext)
   const [formData, setFormData] = useState({
     nombreCompleto: '',
     numeroCelular: '',
@@ -96,11 +98,16 @@ function Register() {
       console.log('Respuesta del servidor:', result)
 
       if (response.ok) {
-        toast.success('¡Registro exitoso!', {
-          description: 'Ahora puedes iniciar sesión con tu cuenta',
-          duration: 3000,
+        // El backend ya devuelve token y usuario, entonces iniciamos sesión automáticamente
+        login(result.usuario, result.token)
+        
+        toast.success(`¡Registro exitoso!`, {
+          description: `Bienvenido ${result.usuario.nombreCompleto}, ya tienes tu cuenta activa`,
+          duration: 4000,
         })
-        navigate('/signin')
+        
+        // Redirigir al inicio después del registro y login automático
+        navigate('/')
       } else {
         console.error('Error del servidor:', result)
         toast.error('Error en el registro', {
