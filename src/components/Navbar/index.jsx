@@ -1,4 +1,4 @@
-import { ShoppingBagIcon } from "@heroicons/react/24/solid";
+import { ShoppingBagIcon, UserIcon, ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
 import { ShoppingCartContext } from "../../Context";
 import { NavItem } from "../NavItem";
 import { useContext, useState } from "react";
@@ -11,6 +11,11 @@ const Navbar = () => {
     counter,
     updateCategoryPath,
     setSearchValue,
+    // New auth system
+    isAuthenticated,
+    user,
+    logout,
+    // Legacy (mantener compatibilidad)
     account,
     signOut,
     isSignIn,
@@ -80,22 +85,51 @@ const Navbar = () => {
         })}
         
         {/* Authentication Links */}
-        <li className="cursor-pointer text-xs sm:text-sm">
-          <Link 
-            to="/signin"
-            className="hover:text-green-600 transition-colors"
-          >
-            Iniciar Sesión
-          </Link>
-        </li>
-        <li className="cursor-pointer text-xs sm:text-sm">
-          <Link 
-            to="/register"
-            className="bg-green-600 text-white px-3 py-1 rounded-full hover:bg-green-700 transition-colors"
-          >
-            Registrarse
-          </Link>
-        </li>
+        {!isAuthenticated ? (
+          <>
+            <li className="cursor-pointer text-xs sm:text-sm">
+              <Link 
+                to="/signin"
+                className="hover:text-green-600 transition-colors"
+              >
+                Iniciar Sesión
+              </Link>
+            </li>
+            <li className="cursor-pointer text-xs sm:text-sm">
+              <Link 
+                to="/register"
+                className="bg-green-600 text-white px-3 py-1 rounded-full hover:bg-green-700 transition-colors"
+              >
+                Registrarse
+              </Link>
+            </li>
+          </>
+        ) : (
+          <>
+            {/* User Info */}
+            <li className="flex items-center gap-2 text-xs sm:text-sm">
+              <UserIcon className="w-4 h-4 text-green-600" />
+              <span className="hidden sm:inline text-gray-700">
+                {user?.nombreCompleto?.split(' ')[0] || 'Usuario'}
+              </span>
+              <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+                {user?.tipoUsuario || 'usuario'}
+              </span>
+            </li>
+            
+            {/* Logout Button */}
+            <li className="cursor-pointer text-xs sm:text-sm">
+              <button
+                onClick={logout}
+                className="flex items-center gap-1 hover:text-red-600 transition-colors"
+                title="Cerrar sesión"
+              >
+                <ArrowRightOnRectangleIcon className="w-4 h-4" />
+                <span className="hidden sm:inline">Salir</span>
+              </button>
+            </li>
+          </>
+        )}
         
         <li className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded-full">
           <ShoppingBagIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600"/>

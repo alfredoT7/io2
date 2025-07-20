@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Layout } from '../../components/Layout'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { buildApiUrl, API_CONFIG } from '../../config/api'
 
 function Register() {
   const navigate = useNavigate()
@@ -82,7 +84,7 @@ function Register() {
 
       console.log('Datos a enviar:', dataToSend)
 
-      const response = await fetch('http://localhost:3001/api/auth/registro', {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.REGISTER), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,14 +96,24 @@ function Register() {
       console.log('Respuesta del servidor:', result)
 
       if (response.ok) {
-        alert('Registro exitoso! Ahora puedes iniciar sesión')
+        toast.success('¡Registro exitoso!', {
+          description: 'Ahora puedes iniciar sesión con tu cuenta',
+          duration: 3000,
+        })
         navigate('/signin')
       } else {
         console.error('Error del servidor:', result)
-        setError(result.message || `Error en el registro: ${JSON.stringify(result)}`)
+        toast.error('Error en el registro', {
+          description: result.message || 'Verifica los datos e intenta nuevamente',
+          duration: 4000,
+        })
       }
     } catch (err) {
       console.error('Error de conexión:', err)
+      toast.error('Error de conexión', {
+        description: 'Verifica que el servidor esté funcionando',
+        duration: 4000,
+      })
       setError('Error de conexión. Intenta de nuevo.')
     } finally {
       setLoading(false)

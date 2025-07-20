@@ -10,6 +10,8 @@ import { NotFound } from "../NotFound";
 import { SignIn } from "../SignIn";
 import { Register } from "../Register";
 import { Navbar } from "../../components/Navbar";
+import { ProtectedRoute } from "../../components/ProtectedRoute";
+import { Toaster } from 'sonner';
 import "./App.css";
 import { CheckoutSideMenu } from "../../components/CheckoutSideMenu";
 
@@ -19,11 +21,46 @@ const AppRoutes = () => {
     { path: "/ventas", element: <Home /> },
     { path: "/nosotros", element: <AboutUs /> },
     { path: "/:category", element: <Home /> },
-    { path: "/my-account", element: <MyAccount /> },
-    { path: "/my-orders/:id", element: <MyOrder /> },
-    { path: "/my-orders", element: <MyOrders /> },
-    { path: "/signin", element: <SignIn /> },
-    { path: "/register", element: <Register /> },
+    { 
+      path: "/my-account", 
+      element: (
+        <ProtectedRoute>
+          <MyAccount />
+        </ProtectedRoute>
+      ) 
+    },
+    { 
+      path: "/my-orders/:id", 
+      element: (
+        <ProtectedRoute>
+          <MyOrder />
+        </ProtectedRoute>
+      ) 
+    },
+    { 
+      path: "/my-orders", 
+      element: (
+        <ProtectedRoute>
+          <MyOrders />
+        </ProtectedRoute>
+      ) 
+    },
+    { 
+      path: "/signin", 
+      element: (
+        <ProtectedRoute requireAuth={false}>
+          <SignIn />
+        </ProtectedRoute>
+      ) 
+    },
+    { 
+      path: "/register", 
+      element: (
+        <ProtectedRoute requireAuth={false}>
+          <Register />
+        </ProtectedRoute>
+      ) 
+    },
     { path: "/*", element: <NotFound /> },
   ]);
 
@@ -37,6 +74,12 @@ const App = () => {
         <AppRoutes />
         <Navbar />
         <CheckoutSideMenu />
+        <Toaster 
+          position="top-right" 
+          richColors 
+          closeButton 
+          expand={true}
+        />
       </BrowserRouter>
     </ShoppingCartProvider>
   );

@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Layout } from "../../components/Layout";
 import { useNavigate } from "react-router-dom";
+import { ShoppingCartContext } from "../../Context";
+import { toast } from 'sonner';
+import { buildApiUrl, API_CONFIG } from '../../config/api';
 
 function SignIn() {
   const navigate = useNavigate()
+  const { login } = useContext(ShoppingCartContext)
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -33,7 +37,7 @@ function SignIn() {
     try {
       console.log('Datos del login:', formData)
       
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.LOGIN), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,19 +49,22 @@ function SignIn() {
       console.log('Respuesta del login:', result)
 
       if (response.ok) {
-        // Guardar token y datos del usuario
-        localStorage.setItem('token', result.token)
-        localStorage.setItem('usuario', JSON.stringify(result.usuario))
-        
-        alert(`¡Bienvenido ${result.usuario.nombreCompleto}!`)
+        // Usar el sistema de auth del contexto
+        login(result.usuario, result.token)
         navigate('/')
       } else {
         console.error('Error del servidor en login:', result)
-        setError(result.message || 'Error en el login')
+        toast.error('Error al iniciar sesión', {
+          description: result.message || 'Verifica tus credenciales',
+          duration: 4000,
+        })
       }
     } catch (err) {
       console.error('Error de conexión en login:', err)
-      setError('Error de conexión. Verifica que el servidor esté funcionando.')
+      toast.error('Error de conexión', {
+        description: 'Verifica que el servidor esté funcionando',
+        duration: 4000,
+      })
     } finally {
       setLoading(false)
     }

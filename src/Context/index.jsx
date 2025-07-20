@@ -1,10 +1,14 @@
 import { createContext, useEffect, useState, useCallback } from 'react'
 import { staticProducts } from '../api';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useAuth } from '../hooks/useAuth';
 
 export const ShoppingCartContext = createContext()
 
 export const ShoppingCartProvider = ({ children }) => {
+  // Auth state
+  const auth = useAuth()
+  
   const [counter, setCounter] = useState(0);
   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
   const [isCheckoutSideMenu, setIsCheckoutSideMenu] = useState(false);
@@ -101,6 +105,15 @@ export const ShoppingCartProvider = ({ children }) => {
       searchCategory,
       setSearchCategory,
       updateCategoryPath,
+      // Auth
+      user: auth.user,
+      token: auth.token,
+      isAuthenticated: auth.isAuthenticated,
+      authLoading: auth.loading,
+      login: auth.login,
+      logout: auth.logout,
+      register: auth.register,
+      // Legacy (mantener compatibilidad)
       account,
       signIn,
       signOut,
