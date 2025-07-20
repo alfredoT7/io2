@@ -98,7 +98,7 @@ const OrdersCard = (props) => {
                     {product.nombre}
                   </p>
                   <p className="text-xs text-gray-500">
-                    Cantidad: {product.cantidad} × ${product.precio}
+                    Cantidad: {product.cantidad} × Bs {product.precio}
                   </p>
                 </div>
               </div>

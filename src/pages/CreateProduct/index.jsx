@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react'
-import { Layout } from '../../components/Layout'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { buildApiUrl, API_CONFIG } from '../../config/api'
@@ -162,8 +161,7 @@ function CreateProduct() {
   }
 
   return (
-    <Layout>
-      <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -201,7 +199,7 @@ function CreateProduct() {
             {/* Precio */}
             <div>
               <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
-                Precio (USD) *
+                Precio (Bs) *
               </label>
               <input
                 id="price"
@@ -213,7 +211,7 @@ function CreateProduct() {
                 value={formData.price}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                placeholder="15.99"
+                placeholder="150.00"
               />
             </div>
 
@@ -328,7 +326,6 @@ function CreateProduct() {
           </form>
         </div>
       </div>
-    </Layout>
   )
 }
 

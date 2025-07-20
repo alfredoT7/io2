@@ -189,7 +189,7 @@ function MyOrder() {
                     <div className="flex-1">
                       <h3 className="font-medium text-gray-900">{product.nombre}</h3>
                       <p className="text-sm text-gray-600">
-                        Cantidad: {product.cantidad} × ${product.precio}
+                        Cantidad: {product.cantidad} × Bs {product.precio}
                       </p>
                     </div>
                     <div className="text-right">

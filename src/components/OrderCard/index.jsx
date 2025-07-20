@@ -26,7 +26,7 @@ const OrderCard = props => {
       </div>
       <div className="flex items-center gap-2">
         <div className="text-right">
-          <p className="text-lg font-medium">${price}</p>
+          <p className="text-lg font-medium">Bs {price}</p>
           {quantity && (
             <p className="text-sm text-gray-500">
               Total: ${(price * quantity).toFixed(2)}

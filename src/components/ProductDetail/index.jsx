@@ -26,7 +26,7 @@ const ProductDetail = () => {
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
           <div className="bg-green-50 px-4 py-3 rounded-lg border border-green-200">
             <span className="text-2xl sm:text-3xl font-bold text-green-600">
-              ${productDetail.price}
+              Bs {productDetail.price}
             </span>
           </div>
           {productDetail.rating && (

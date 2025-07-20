@@ -76,7 +76,7 @@ function LandingPage() {
                     {product.category}
                   </p>
                   <p className="text-sm mb-4">
-                    <span className="font-bold text-xl">${product.price}</span>
+                    <span className="font-bold text-xl">Bs {product.price}</span>
                   </p>
                   
                   {/* Rating and Add to Cart */}

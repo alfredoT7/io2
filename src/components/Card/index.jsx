@@ -55,7 +55,7 @@ const Card = ({ data }) => {
             {data.title}
           </span>
           <span className="text-lg font-bold text-green-600 shrink-0">
-            ${data.price}
+            Bs {data.price}
           </span>
         </div>
         
