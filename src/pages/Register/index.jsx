@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react'
-import { Layout } from '../../components/Layout'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { buildApiUrl, API_CONFIG } from '../../config/api'
@@ -128,8 +127,7 @@ function Register() {
   }
 
   return (
-    <Layout>
-      <div className="flex justify-center items-center min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex justify-center items-center min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
         <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -294,7 +292,6 @@ function Register() {
           </form>
         </div>
       </div>
-    </Layout>
   )
 }
 

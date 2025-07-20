@@ -22,15 +22,15 @@ function LandingPage() {
             {/* Content */}
             <div className="lg:w-3/5 lg:pr-8 mb-8 lg:mb-0">
               <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-                ¡Bienvenido a EcoClean: Donde la Limpieza se Encuentra con la Sostenibilidad!
+                ¡Bienvenido a Master Clean: Productos de Limpieza Premium!
               </h1>
-              <h2 className="text-2xl text-orange-600 mb-6">
-                Una Experiencia de Limpieza Revolucionaria
+              <h2 className="text-2xl text-green-600 mb-6">
+                Calidad Superior en Productos de Limpieza
               </h2>
               <p className="text-gray-600 mb-8 text-lg leading-relaxed">
-                En EcoClean, somos más que una tienda de productos de limpieza – somos tu dosis diaria de 
-                sostenibilidad con un toque de innovación. Ubicados en el corazón de la ciudad, somos tu 
-                destino perfecto para pastillas efervescentes ecológicas que cuidan tu hogar y el planeta.
+                En Master Clean, somos especialistas en productos de limpieza de alta calidad. 
+                Ofrecemos soluciones profesionales para mantener tu hogar y oficina impecables, 
+                con productos que garantizan los mejores resultados y la máxima eficacia.
               </p>
               <button className="bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300 transform hover:scale-105">
                 Conoce Más
@@ -40,7 +40,7 @@ function LandingPage() {
             <div className="lg:w-2/5">
               <img 
                 src="https://senti2.com.es/wp-content/uploads/2023/07/TabletasLimpiadoras_Aplicacion.webp" 
-                alt="Pastillas Efervescentes" 
+                alt="Productos Master Clean" 
                 className="w-full rounded-lg shadow-lg"
               />
             </div>
@@ -104,6 +104,56 @@ function LandingPage() {
         </div>
       </section>
 
+      {/* Social Media Section */}
+      <section className="bg-gradient-to-r from-green-100 to-blue-100 py-16 px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h3 className="text-3xl font-bold mb-6 text-gray-800">
+            Estas son nuestras Redes Sociales
+          </h3>
+          <p className="text-gray-600 mb-8 text-lg">
+            Síguenos en nuestras redes sociales para estar al día con las últimas novedades, 
+            tips de limpieza y promociones especiales de Master Clean.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
+            {/* Facebook */}
+            <a 
+              href="https://www.facebook.com/share/18fZV4ty4X/?mibextid=wwXIfr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors duration-300 transform hover:scale-105"
+            >
+              <i className="fab fa-facebook text-xl"></i>
+              <span className="font-medium">Síguenos en Facebook</span>
+            </a>
+
+            {/* TikTok */}
+            <a 
+              href="https://www.tiktok.com/@masterclean0?is_from_webapp=1&sender_device=pc" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300 transform hover:scale-105"
+            >
+              <i className="fab fa-tiktok text-xl"></i>
+              <span className="font-medium">Síguenos en TikTok</span>
+            </a>
+
+            {/* Email */}
+            <a 
+              href="mailto:masterclean.tecno@gmail.com" 
+              className="flex items-center gap-3 bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors duration-300 transform hover:scale-105"
+            >
+              <i className="fas fa-envelope text-xl"></i>
+              <span className="font-medium">Contáctanos</span>
+            </a>
+          </div>
+
+          <div className="mt-6 text-sm text-gray-600">
+            <p>Email: masterclean.tecno@gmail.com</p>
+          </div>
+        </div>
+      </section>
+
       {/* Newsletter Section */}
       <section className="bg-yellow-100 py-16 px-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -111,7 +161,7 @@ function LandingPage() {
             ¡Mantente Conectado con Nosotros!
           </h3>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            No te pierdas las últimas actualizaciones, promociones y ofertas exclusivas de EcoClean. 
+            No te pierdas las últimas actualizaciones, promociones y ofertas exclusivas de Master Clean. 
             Estamos aquí para mantenerte al día con todo lo emocionante, desde nuevos productos hasta 
             eventos especiales y más. ¡Únete a nuestra lista de correo para desbloquear un mundo de beneficios!
           </p>

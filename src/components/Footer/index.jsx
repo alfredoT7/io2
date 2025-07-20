@@ -7,9 +7,9 @@ function Footer() {
           <div>
             <h4 className="font-semibold text-lg mb-4">Tienda</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-600 hover:underline">Pastillas Efervescentes</a></li>
-              <li><a href="#" className="text-gray-600 hover:underline">Packs Familiares</a></li>
-              <li><a href="#" className="text-gray-600 hover:underline">Fragancias Especiales</a></li>
+              <li><a href="#" className="text-gray-600 hover:underline">Productos de Limpieza</a></li>
+              <li><a href="#" className="text-gray-600 hover:underline">Kits Profesionales</a></li>
+              <li><a href="#" className="text-gray-600 hover:underline">Productos Premium</a></li>
             </ul>
           </div>
 

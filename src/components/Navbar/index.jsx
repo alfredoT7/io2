@@ -22,7 +22,7 @@ const Navbar = () => {
   } = useContext(ShoppingCartContext);
 
   const firstMenu = [
-    { to: "/", link: "EcoClean" },
+    { to: "/", link: "Master Clean" },
     { to: "/", link: "Inicio" },
     { to: "/ventas", link: "Ventas" },
     { to: "/limpieza", link: "Limpieza Ecológica" },
@@ -86,7 +86,7 @@ const Navbar = () => {
       <div className="md:hidden">
         <NavItem
           to="/"
-          link="EcoClean"
+          link="Master Clean"
           index={0}
           isActive={activeLink === 0}
           onSelection={() => handleLinkCategory(0)}
