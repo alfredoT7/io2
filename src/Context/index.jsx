@@ -135,6 +135,7 @@ export const ShoppingCartProvider = ({ children }) => {
       refreshProducts,
       // Auth
       user: auth.user,
+      userInfo: auth.user, // Alias para compatibilidad
       token: auth.token,
       isAuthenticated: auth.isAuthenticated,
       authLoading: auth.loading,
