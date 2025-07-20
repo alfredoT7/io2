@@ -37,6 +37,10 @@ const Navbar = () => {
   const handleLinkClick = index => {
     setActiveLink(index);
     setIsMobileMenuOpen(false); // Cerrar menú móvil al hacer click
+    // Scroll al top cuando cambie de página
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
 
   const handleLinkCategory = index => {
@@ -52,6 +56,10 @@ const Navbar = () => {
     }
     
     setSearchValue("");
+    // Scroll al top cuando cambie de categoría
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
 
   const toggleMobileMenu = () => {

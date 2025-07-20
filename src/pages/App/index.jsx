@@ -14,6 +14,7 @@ import { Checkout } from "../Checkout";
 import { Navbar } from "../../components/Navbar";
 import { ProtectedRoute } from "../../components/ProtectedRoute";
 import { SellerProtectedRoute } from "../../components/SellerProtectedRoute";
+import { ScrollToTop } from "../../components/ScrollToTop";
 import { Toaster } from 'sonner';
 import "./App.css";
 import { CheckoutSideMenu } from "../../components/CheckoutSideMenu";
@@ -90,6 +91,7 @@ const App = () => {
   return (
     <ShoppingCartProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <AppRoutes />
         <Navbar />
         <CheckoutSideMenu />
