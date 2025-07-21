@@ -146,37 +146,30 @@ function Checkout() {
 
       setOrder(prevOrder => [...prevOrder, newOrder])
       
-      // Crear mensaje para WhatsApp con detalles del pedido
-      const phoneNumber = "59167439775" // Número de la empresa sin + ni espacios
+      // Crear mensaje simple para WhatsApp
+      const phoneNumber = "59167439775"
       
-      const productDetails = cartProducts.map((product, index) => 
-        `${index + 1}. ${product.title}\n   • Precio: Bs ${product.price}\n   • Cantidad: ${product.quantity || 1}\n   • Subtotal: Bs ${(product.price * (product.quantity || 1)).toFixed(2)}`
-      ).join('\n\n')
+      // Mensaje más corto y simple
+      const productList = cartProducts.map((product, index) => 
+        `${index + 1}. ${product.title} - Bs ${product.price} x${product.quantity || 1}`
+      ).join('\n')
 
-      const whatsappMessage = `🛒 *NUEVO PEDIDO - MASTER CLEAN*\n\n` +
-        `📋 *Detalles del Pedido:*\n` +
-        `• ID: ${result.id || newOrder.id}\n` +
-        `• Fecha: ${new Date().toLocaleString()}\n\n` +
-        
-        `🛍️ *Productos:*\n${productDetails}\n\n` +
-        
-        `💰 *Resumen:*\n` +
-        `• Total de productos: ${cartProducts.length}\n` +
-        `• Total a pagar: Bs ${getTotalPrice().toFixed(2)}\n` +
-        `• Método de pago: ${formData.metodoPago === 'efectivo' ? '💵 Efectivo al momento de entrega' : formData.metodoPago}\n\n` +
-        
-        `📍 *Datos de Entrega:*\n` +
-        `• Dirección: ${formData.direccion}\n` +
-        `• Ciudad: ${formData.ciudad}\n` +
-        `• Teléfono: ${formData.telefono}\n` +
-        `${formData.notas ? `• Notas: ${formData.notas}\n` : ''}` +
-        
-        `\n✅ *Confirmación requerida*\n` +
-        `Hola, acabo de realizar este pedido en Master Clean. Por favor confirmen la disponibilidad y procedan con el proceso de entrega. ¡Gracias!`
+      const whatsappMessage = `🛒 NUEVO PEDIDO - MASTER CLEAN
 
-      // Codificar mensaje para URL
-      const encodedMessage = encodeURIComponent(whatsappMessage)
-      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+ID: ${result.id || newOrder.id}
+Fecha: ${new Date().toLocaleDateString()}
+
+PRODUCTOS:
+${productList}
+
+TOTAL: Bs ${getTotalPrice().toFixed(2)}
+PAGO: Efectivo al entregar
+
+ENTREGA:
+${formData.direccion}, ${formData.ciudad}
+Tel: ${formData.telefono}
+
+Hola! Acabo de realizar este pedido. Por favor confirmen disponibilidad. Gracias!`
 
       // Limpiar carrito
       setCartProducts([])
@@ -184,18 +177,24 @@ function Checkout() {
       // Cerrar checkout
       closeCheckoutSideMenu()
 
-      // Abrir WhatsApp inmediatamente
+      // Crear URL de WhatsApp y abrirla
+      const encodedMessage = encodeURIComponent(whatsappMessage)
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+      
+      console.log('URL de WhatsApp:', whatsappUrl) // Para debug
+      
+      // Abrir WhatsApp
       window.open(whatsappUrl, '_blank')
 
       toast.success('¡Compra realizada exitosamente!', {
-        description: 'Se ha abierto WhatsApp para confirmar tu pedido',
-        duration: 4000,
+        description: 'Se abrió WhatsApp para confirmar tu pedido',
+        duration: 3000,
       })
 
-      // Redirigir a mis pedidos después de un momento
+      // Redirigir después de un momento
       setTimeout(() => {
         navigate('/my-orders')
-      }, 2000)
+      }, 1500)
 
     } catch (error) {
       console.error('Error al procesar compra:', error)
