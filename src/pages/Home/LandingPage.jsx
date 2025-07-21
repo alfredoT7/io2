@@ -211,7 +211,7 @@ function LandingPage() {
           
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
             {/* Facebook */}
-            <a 
+            {/* <a 
               href="https://www.facebook.com/share/18fZV4ty4X/?mibextid=wwXIfr" 
               target="_blank" 
               rel="noopener noreferrer"
@@ -219,7 +219,7 @@ function LandingPage() {
             >
               <i className="fab fa-facebook text-xl"></i>
               <span className="font-medium">Síguenos en Facebook</span>
-            </a>
+            </a> */}
 
             {/* TikTok */}
             <a 
