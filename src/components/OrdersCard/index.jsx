@@ -123,7 +123,7 @@ const OrdersCard = (props) => {
         
         <div className="text-right">
           <p className="text-sm text-gray-600">Total</p>
-          <p className="text-xl font-bold text-gray-900">${totalPrice}</p>
+          <p className="text-xl font-bold text-gray-900">Bs {totalPrice}</p>
         </div>
       </div>
 

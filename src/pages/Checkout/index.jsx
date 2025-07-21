@@ -13,7 +13,6 @@ function Checkout() {
     metodoPago: 'efectivo',
     direccion: '',
     ciudad: '',
-    codigoPostal: '',
     telefono: '',
     notas: ''
   })
@@ -53,10 +52,6 @@ function Checkout() {
       newErrors.ciudad = 'La ciudad es requerida'
     }
     
-    if (!formData.codigoPostal.trim()) {
-      newErrors.codigoPostal = 'El código postal es requerido'
-    }
-    
     if (!formData.telefono.trim()) {
       newErrors.telefono = 'El teléfono es requerido'
     }
@@ -94,7 +89,6 @@ function Checkout() {
         envio: {
           direccion: formData.direccion,
           ciudad: formData.ciudad,
-          codigoPostal: formData.codigoPostal,
           telefono: formData.telefono
         },
         notas: formData.notas || ''
@@ -201,7 +195,7 @@ function Checkout() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Ciudad *
@@ -218,25 +212,6 @@ function Checkout() {
                   />
                   {errors.ciudad && (
                     <p className="text-red-500 text-sm mt-1">{errors.ciudad}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Código Postal *
-                  </label>
-                  <input
-                    type="text"
-                    name="codigoPostal"
-                    value={formData.codigoPostal}
-                    onChange={handleChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                      errors.codigoPostal ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                    placeholder="00000"
-                  />
-                  {errors.codigoPostal && (
-                    <p className="text-red-500 text-sm mt-1">{errors.codigoPostal}</p>
                   )}
                 </div>
               </div>
@@ -270,10 +245,29 @@ function Checkout() {
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
-                  <option value="efectivo">Efectivo</option>
-                  <option value="tarjeta">Tarjeta de Crédito</option>
-                  <option value="transferencia">Transferencia Bancaria</option>
+                  <option value="efectivo">💵 Efectivo</option>
+                  <option value="qr">📱 Código QR</option>
                 </select>
+                {formData.metodoPago === 'qr' && (
+                  <div className="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-700 mb-2">
+                      📲 Escanea el código QR para realizar el pago
+                    </p>
+                    <p className="text-xs text-blue-600">
+                      Una vez realizado el pago, tu pedido será procesado automáticamente.
+                    </p>
+                  </div>
+                )}
+                {formData.metodoPago === 'efectivo' && (
+                  <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <p className="text-sm text-green-700 mb-2">
+                      💰 Pago en efectivo al momento de la entrega
+                    </p>
+                    <p className="text-xs text-green-600">
+                      Asegúrate de tener el monto exacto disponible.
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div>
