@@ -116,7 +116,7 @@ function LandingPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-700 text-lg">
-                      <strong>1 Paquete = 20 Pastillas</strong>
+                      <strong>1 Caja = 12 Pastillas</strong>
                     </p>
                     <p className="text-gray-600 text-sm mt-1">
                       Cada pastilla rinde hasta 500ml de solución limpiadora
