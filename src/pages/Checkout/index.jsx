@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import { Layout } from '../../components/Layout'
 import { ShoppingCartContext } from '../../Context'
-import { createPurchase } from '../../config/api'
+import { buildApiUrl, API_CONFIG } from '../../config/api'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 
@@ -76,6 +76,16 @@ function Checkout() {
     setLoading(true)
 
     try {
+      // Verificar que tenemos el token
+      if (!token) {
+        toast.error('Error de autenticación', {
+          description: 'Por favor inicia sesión nuevamente',
+          duration: 4000,
+        })
+        navigate('/signin')
+        return
+      }
+
       // Preparar datos según el formato de tu API
       const purchaseData = {
         productos: cartProducts.map(product => ({
@@ -89,20 +99,44 @@ function Checkout() {
         envio: {
           direccion: formData.direccion,
           ciudad: formData.ciudad,
+          codigoPostal: "0000", // Valor por defecto (backend lo requiere)
           telefono: formData.telefono
         },
         notas: formData.notas || ''
       }
 
       console.log('Datos de compra a enviar:', purchaseData)
+      console.log('Token usado:', token)
+      console.log('📦 Productos en el carrito:', cartProducts)
+      console.log('💰 Método de pago seleccionado:', formData.metodoPago)
+      console.log('📍 Datos de envío:', {
+        direccion: formData.direccion,
+        ciudad: formData.ciudad,
+        telefono: formData.telefono
+      })
 
-      const response = await createPurchase(purchaseData)
-      
-      console.log('Respuesta de compra:', response)
+      // Hacer la petición directamente con el token del contexto
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.CREATE), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(purchaseData)
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error('Error del servidor:', errorData)
+        throw new Error(errorData.message || `Error ${response.status}`)
+      }
+
+      const result = await response.json()
+      console.log('Respuesta de compra:', result)
 
       // Guardar orden en el contexto
       const newOrder = {
-        id: response.id || Date.now(),
+        id: result.id || Date.now(),
         date: new Date().toLocaleDateString(),
         products: cartProducts,
         totalProducts: cartProducts.length,
@@ -112,19 +146,56 @@ function Checkout() {
 
       setOrder(prevOrder => [...prevOrder, newOrder])
       
+      // Crear mensaje para WhatsApp con detalles del pedido
+      const phoneNumber = "59167439775" // Número de la empresa sin + ni espacios
+      
+      const productDetails = cartProducts.map((product, index) => 
+        `${index + 1}. ${product.title}\n   • Precio: Bs ${product.price}\n   • Cantidad: ${product.quantity || 1}\n   • Subtotal: Bs ${(product.price * (product.quantity || 1)).toFixed(2)}`
+      ).join('\n\n')
+
+      const whatsappMessage = `🛒 *NUEVO PEDIDO - MASTER CLEAN*\n\n` +
+        `📋 *Detalles del Pedido:*\n` +
+        `• ID: ${result.id || newOrder.id}\n` +
+        `• Fecha: ${new Date().toLocaleString()}\n\n` +
+        
+        `🛍️ *Productos:*\n${productDetails}\n\n` +
+        
+        `💰 *Resumen:*\n` +
+        `• Total de productos: ${cartProducts.length}\n` +
+        `• Total a pagar: Bs ${getTotalPrice().toFixed(2)}\n` +
+        `• Método de pago: ${formData.metodoPago === 'efectivo' ? '💵 Efectivo al momento de entrega' : formData.metodoPago}\n\n` +
+        
+        `📍 *Datos de Entrega:*\n` +
+        `• Dirección: ${formData.direccion}\n` +
+        `• Ciudad: ${formData.ciudad}\n` +
+        `• Teléfono: ${formData.telefono}\n` +
+        `${formData.notas ? `• Notas: ${formData.notas}\n` : ''}` +
+        
+        `\n✅ *Confirmación requerida*\n` +
+        `Hola, acabo de realizar este pedido en Master Clean. Por favor confirmen la disponibilidad y procedan con el proceso de entrega. ¡Gracias!`
+
+      // Codificar mensaje para URL
+      const encodedMessage = encodeURIComponent(whatsappMessage)
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+
       // Limpiar carrito
       setCartProducts([])
       
       // Cerrar checkout
       closeCheckoutSideMenu()
 
+      // Abrir WhatsApp inmediatamente
+      window.open(whatsappUrl, '_blank')
+
       toast.success('¡Compra realizada exitosamente!', {
-        description: 'Recibirás un email con los detalles de tu pedido',
-        duration: 5000,
+        description: 'Se ha abierto WhatsApp para confirmar tu pedido',
+        duration: 4000,
       })
 
-      // Redirigir a mis pedidos
-      navigate('/my-orders')
+      // Redirigir a mis pedidos después de un momento
+      setTimeout(() => {
+        navigate('/my-orders')
+      }, 2000)
 
     } catch (error) {
       console.error('Error al procesar compra:', error)
@@ -239,35 +310,17 @@ function Checkout() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Método de Pago
                 </label>
-                <select
-                  name="metodoPago"
-                  value={formData.metodoPago}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                  <option value="efectivo">💵 Efectivo</option>
-                  <option value="qr">📱 Código QR</option>
-                </select>
-                {formData.metodoPago === 'qr' && (
-                  <div className="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-sm text-blue-700 mb-2">
-                      📲 Escanea el código QR para realizar el pago
-                    </p>
-                    <p className="text-xs text-blue-600">
-                      Una vez realizado el pago, tu pedido será procesado automáticamente.
-                    </p>
-                  </div>
-                )}
-                {formData.metodoPago === 'efectivo' && (
-                  <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-lg">
-                    <p className="text-sm text-green-700 mb-2">
-                      💰 Pago en efectivo al momento de la entrega
-                    </p>
-                    <p className="text-xs text-green-600">
-                      Asegúrate de tener el monto exacto disponible.
-                    </p>
-                  </div>
-                )}
+                <div className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                  <span className="text-gray-900">� Efectivo</span>
+                </div>
+                <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm text-green-700 mb-2">
+                    💰 Pago en efectivo al momento de la entrega
+                  </p>
+                  <p className="text-xs text-green-600">
+                    Asegúrate de tener el monto exacto disponible.
+                  </p>
+                </div>
               </div>
 
               <div>
@@ -295,7 +348,9 @@ function Checkout() {
                     Procesando...
                   </>
                 ) : (
-                  `Confirmar Compra - $${getTotalPrice().toFixed(2)}`
+                  <>
+                    💵 Confirmar Compra - Bs {getTotalPrice().toFixed(2)}
+                  </>
                 )}
               </button>
             </form>
@@ -323,7 +378,7 @@ function Checkout() {
                       Cantidad: {product.quantity || 1}
                     </p>
                     <p className="text-green-600 font-semibold">
-                      ${(product.price * (product.quantity || 1)).toFixed(2)}
+                      Bs {(product.price * (product.quantity || 1)).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -333,7 +388,7 @@ function Checkout() {
             <div className="border-t border-gray-200 pt-4">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-600">Subtotal:</span>
-                <span className="font-medium">${getTotalPrice().toFixed(2)}</span>
+                <span className="font-medium">Bs {getTotalPrice().toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-gray-600">Envío:</span>
@@ -341,7 +396,7 @@ function Checkout() {
               </div>
               <div className="flex justify-between items-center text-lg font-bold text-gray-800 border-t border-gray-200 pt-2">
                 <span>Total:</span>
-                <span>${getTotalPrice().toFixed(2)}</span>
+                <span>Bs {getTotalPrice().toFixed(2)}</span>
               </div>
             </div>
 

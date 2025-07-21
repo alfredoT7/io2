@@ -72,11 +72,6 @@ export const useAuth = () => {
     setToken(null)
     setUser(null)
     setIsAuthenticated(false)
-    
-    toast.success('Sesión cerrada correctamente', {
-      description: 'Vuelve pronto',
-      duration: 2000,
-    })
   }
 
   const register = () => {

@@ -93,6 +93,46 @@ export const ShoppingCartProvider = ({ children }) => {
     isSignIn
   } = useLocalStorage();
 
+  // Función de logout personalizada que limpia todo
+  const handleLogout = () => {
+    // Limpiar datos de autenticación (useAuth)
+    auth.logout()
+    
+    // Limpiar datos legacy (useLocalStorage)
+    signOut()
+    
+    // Limpiar TODOS los datos del localStorage relacionados con la sesión
+    localStorage.removeItem('token')
+    localStorage.removeItem('usuario')
+    localStorage.removeItem('ACCOUNT')
+    
+    // Limpiar datos del carrito
+    setCartProducts([])
+    setOrder([])
+    
+    // Limpiar otros estados
+    setCounter(0)
+    setProductDetail({
+      title: "",
+      price: "",
+      description: "",
+      image: ""
+    })
+    
+    // Cerrar menús abiertos
+    closeProductDetail()
+    closeCheckoutSideMenu()
+    
+    // Limpiar filtros
+    setSearchValue("")
+    setSearchCategory("")
+    
+    toast.success('Sesión cerrada correctamente', {
+      description: 'Todos los datos han sido limpiados',
+      duration: 3000,
+    })
+  }
+
   // Function to refresh products
   const refreshProducts = async () => {
     try {
@@ -140,7 +180,7 @@ export const ShoppingCartProvider = ({ children }) => {
       isAuthenticated: auth.isAuthenticated,
       authLoading: auth.loading,
       login: auth.login,
-      logout: auth.logout,
+      logout: handleLogout, // Usar la función personalizada
       register: auth.register,
       // Legacy (mantener compatibilidad)
       account,

@@ -2,7 +2,7 @@ function Footer() {
   return (
     <footer className="bg-yellow-200 mt-auto">
       <div className="max-w-6xl mx-auto py-12 px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Shop Links */}
           <div>
             <h4 className="font-semibold text-lg mb-4">Tienda</h4>
@@ -10,25 +10,6 @@ function Footer() {
               <li><a href="#" className="text-gray-600 hover:underline">Productos de Limpieza</a></li>
               <li><a href="#" className="text-gray-600 hover:underline">Kits Profesionales</a></li>
               <li><a href="#" className="text-gray-600 hover:underline">Productos Premium</a></li>
-            </ul>
-          </div>
-
-          {/* Help Links */}
-          <div>
-            <h4 className="font-semibold text-lg mb-4">Ayuda</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-600 hover:underline">Preguntas Frecuentes</a></li>
-              <li><a href="#" className="text-gray-600 hover:underline">Contáctanos</a></li>
-            </ul>
-          </div>
-
-          {/* About Links */}
-          <div>
-            <h4 className="font-semibold text-lg mb-4">Acerca de</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-600 hover:underline">Nuestra Misión</a></li>
-              <li><a href="#" className="text-gray-600 hover:underline">Política de Privacidad</a></li>
-              <li><a href="#" className="text-gray-600 hover:underline">Términos de Servicio</a></li>
             </ul>
           </div>
 

@@ -1,8 +1,10 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { ShoppingCartContext } from "../../Context";
 import { useShoppingCart } from "../../hooks/useShoppingCart";
 
 function LandingPage() {
+  const navigate = useNavigate();
   const { items } = useContext(ShoppingCartContext);
   const { addProductToCart, cartProducts } = useShoppingCart();
 
@@ -43,6 +45,98 @@ function LandingPage() {
                 alt="Productos Master Clean" 
                 className="w-full rounded-lg shadow-lg"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Product Detail Section - Pastillas Efervescentes */}
+      <section className="py-16 px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            {/* Product Image */}
+            <div className="lg:w-1/2">
+              <img 
+                src="https://images.ctfassets.net/isq5xwjfoz2m/67JokCqe0V6JSDWqFS8xdo/75d55449d6fa973e4ec55ce879ba3ab7/MP_-_CE_Example_-_Everdrop.jpg?w=2032&h=848&fl=progressive&q=80&fm=jpg" 
+                alt="Pastillas Efervescentes Master Clean" 
+                className="w-full rounded-lg shadow-xl"
+              />
+            </div>
+            
+            {/* Product Description */}
+            <div className="lg:w-1/2 space-y-6">
+              <h2 className="text-4xl font-bold text-gray-800 mb-4">
+                Pastillas Efervescentes de Limpieza
+              </h2>
+              
+              <div className="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+                <h3 className="text-xl font-semibold text-green-800 mb-3">
+                  🧽 Descripción del Producto
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Nuestras pastillas efervescentes revolucionan la limpieza del hogar. Con una fórmula 
+                  concentrada y ecológica, cada pastilla se disuelve completamente en agua para crear 
+                  una solución de limpieza potente y segura. Perfectas para limpiar superficies, 
+                  desinfectar y eliminar grasa de manera eficaz.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                <h3 className="text-xl font-semibold text-blue-800 mb-3">
+                  🧪 Ingredientes Naturales
+                </h3>
+                <ul className="text-gray-700 space-y-2">
+                  <li className="flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                    <strong>Maicena:</strong> Base natural biodegradable
+                  </li>
+                  <li className="flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                    <strong>Ácido Cítrico:</strong> Elimina cal y desinfecta
+                  </li>
+                  <li className="flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                    <strong>Bicarbonato:</strong> Desodoriza y desengrasa
+                  </li>
+                  <li className="flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                    <strong>Lavavajillas:</strong> Poder desengrasante
+                  </li>
+                  <li className="flex items-center">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
+                    <strong>Aromatizante:</strong> Fragancia fresca y duradera
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-500">
+                <h3 className="text-xl font-semibold text-yellow-800 mb-3">
+                  📦 Presentación
+                </h3>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-700 text-lg">
+                      <strong>1 Paquete = 20 Pastillas</strong>
+                    </p>
+                    <p className="text-gray-600 text-sm mt-1">
+                      Cada pastilla rinde hasta 500ml de solución limpiadora
+                    </p>
+                  </div>
+                  <div className="text-3xl">📦</div>
+                </div>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button 
+                  onClick={() => navigate('/ventas')}
+                  className="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 transition-colors duration-300 transform hover:scale-105"
+                >
+                  Ver Productos
+                </button>
+                <button className="border-2 border-green-600 text-green-600 px-8 py-3 rounded-full hover:bg-green-600 hover:text-white transition-colors duration-300">
+                  Más Información
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -136,6 +230,17 @@ function LandingPage() {
             >
               <i className="fab fa-tiktok text-xl"></i>
               <span className="font-medium">Síguenos en TikTok</span>
+            </a>
+
+            {/* Instagram */}
+            <a 
+              href="https://www.instagram.com/pastillaefervescente?igsh=MmZ6NWF5M3IxeTJs&utm_source=qr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
+            >
+              <i className="fab fa-instagram text-xl"></i>
+              <span className="font-medium">Síguenos en Instagram</span>
             </a>
 
             {/* Email */}

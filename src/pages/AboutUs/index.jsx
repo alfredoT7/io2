@@ -62,7 +62,7 @@ function AboutUs() {
             <p className="text-gray-600">Botellas de plástico evitadas</p>
           </div>
           <div>
-            <div className="text-3xl font-bold text-blue-600 mb-2">12</div>
+            <div className="text-3xl font-bold text-blue-600 mb-2">4</div>
             <p className="text-gray-600">Fragancias naturales disponibles</p>
           </div>
           <div>

@@ -30,8 +30,8 @@ const Navbar = () => {
   ];
 
   const secondMenu = [
-    { to: "/my-orders", link: "My orders" },
-    { to: "/my-account", link: "My Account" }
+    { to: "/my-orders", link: "Mis Pedidos" },
+    { to: "/my-account", link: "Mi Cuenta" }
   ];
 
   const handleLinkClick = index => {
