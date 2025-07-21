@@ -146,30 +146,25 @@ function Checkout() {
 
       setOrder(prevOrder => [...prevOrder, newOrder])
       
-      // Crear mensaje simple para WhatsApp
+      // Crear mensaje súper simple para WhatsApp
       const phoneNumber = "59167439775"
       
-      // Mensaje más corto y simple
+      // Mensaje corto y simple - SOLO TEXTO
       const productList = cartProducts.map((product, index) => 
-        `${index + 1}. ${product.title} - Bs ${product.price} x${product.quantity || 1}`
+        `${index + 1}. ${product.title} x${product.quantity || 1} - Bs${product.price}`
       ).join('\n')
 
-      const whatsappMessage = `🛒 NUEVO PEDIDO - MASTER CLEAN
-
+      const whatsappMessage = `PEDIDO MASTER CLEAN
 ID: ${result.id || newOrder.id}
-Fecha: ${new Date().toLocaleDateString()}
 
 PRODUCTOS:
 ${productList}
 
-TOTAL: Bs ${getTotalPrice().toFixed(2)}
-PAGO: Efectivo al entregar
+TOTAL: Bs${getTotalPrice().toFixed(2)}
+ENTREGA: ${formData.direccion}, ${formData.ciudad}
+TEL: ${formData.telefono}
 
-ENTREGA:
-${formData.direccion}, ${formData.ciudad}
-Tel: ${formData.telefono}
-
-Hola! Acabo de realizar este pedido. Por favor confirmen disponibilidad. Gracias!`
+Confirmar pedido por favor`
 
       // Limpiar carrito
       setCartProducts([])
@@ -177,24 +172,30 @@ Hola! Acabo de realizar este pedido. Por favor confirmen disponibilidad. Gracias
       // Cerrar checkout
       closeCheckoutSideMenu()
 
-      // Crear URL de WhatsApp y abrirla
+      // URL simple de WhatsApp
       const encodedMessage = encodeURIComponent(whatsappMessage)
       const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
       
-      console.log('URL de WhatsApp:', whatsappUrl) // Para debug
+      console.log('WhatsApp URL:', whatsappUrl)
       
-      // Abrir WhatsApp
-      window.open(whatsappUrl, '_blank')
+      // Abrir WhatsApp (funcionará mejor en móviles)
+      if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // Es móvil - usar location.href para mejor compatibilidad
+        window.location.href = whatsappUrl
+      } else {
+        // Es desktop - usar window.open
+        window.open(whatsappUrl, '_blank')
+      }
 
-      toast.success('¡Compra realizada exitosamente!', {
-        description: 'Se abrió WhatsApp para confirmar tu pedido',
-        duration: 3000,
+      toast.success('¡Compra realizada!', {
+        description: 'Redirigiendo a WhatsApp...',
+        duration: 2000,
       })
 
-      // Redirigir después de un momento
+      // Redirigir después
       setTimeout(() => {
         navigate('/my-orders')
-      }, 1500)
+      }, 3000)
 
     } catch (error) {
       console.error('Error al procesar compra:', error)
