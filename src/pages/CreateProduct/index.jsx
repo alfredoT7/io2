@@ -1,8 +1,10 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { buildApiUrl, API_CONFIG } from '../../config/api'
 import { ShoppingCartContext } from '../../Context'
+import { uploadImageToCloudinary, validateImageFile } from '../../utils/cloudinary'
+import { validateCloudinaryConfig } from '../../config/cloudinary'
 
 function CreateProduct() {
   const navigate = useNavigate()
@@ -22,6 +24,13 @@ function CreateProduct() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [imagePreview, setImagePreview] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [uploadingImage, setUploadingImage] = useState(false)
+
+  // Validar configuración de Cloudinary al cargar el componente
+  useEffect(() => {
+    validateCloudinaryConfig()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -40,36 +49,37 @@ function CreateProduct() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
-    if (file) {
-      // Verificar tamaño del archivo (máximo 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('La imagen es muy grande', {
-          description: 'Por favor selecciona una imagen menor a 5MB',
-          duration: 4000,
-        })
-        return
-      }
+    if (!file) return
 
-      // Verificar tipo de archivo
-      if (!file.type.startsWith('image/')) {
-        toast.error('Formato no válido', {
-          description: 'Por favor selecciona un archivo de imagen',
-          duration: 4000,
-        })
-        return
-      }
+    // Validar el archivo
+    const validation = validateImageFile(file, {
+      maxSize: 5 * 1024 * 1024, // 5MB
+      allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    })
 
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        const base64String = reader.result
-        setFormData(prev => ({
-          ...prev,
-          image: base64String
-        }))
-        setImagePreview(base64String)
-      }
-      reader.readAsDataURL(file)
+    if (!validation.isValid) {
+      toast.error('Archivo no válido', {
+        description: validation.errors.join(', '),
+        duration: 4000,
+      })
+      return
     }
+
+    // Guardar el archivo seleccionado
+    setSelectedFile(file)
+    
+    // Crear preview local
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setImagePreview(reader.result)
+    }
+    reader.readAsDataURL(file)
+    
+    // Limpiar la URL de Cloudinary anterior si existía
+    setFormData(prev => ({
+      ...prev,
+      image: ''
+    }))
   }
 
   const validateForm = () => {
@@ -85,7 +95,7 @@ function CreateProduct() {
       setError('La descripción es requerida')
       return false
     }
-    if (!formData.image) {
+    if (!selectedFile && !formData.image) {
       setError('La imagen es requerida')
       return false
     }
@@ -105,12 +115,49 @@ function CreateProduct() {
     setLoading(true)
     
     try {
+      let imageUrl = formData.image
+
+      // Si hay una nueva imagen seleccionada, subirla a Cloudinary
+      if (selectedFile) {
+        setUploadingImage(true)
+        
+        toast.info('Subiendo imagen...', {
+          description: 'Por favor espera mientras se procesa la imagen',
+          duration: 3000,
+        })
+
+        const uploadResult = await uploadImageToCloudinary(selectedFile, {
+          folder: 'products', // Organiza las imágenes en una carpeta
+          tags: ['product', 'ecommerce'], // Tags para organización
+          transformation: {
+            width: 800,
+            height: 600,
+            crop: 'fill',
+            quality: 'auto',
+            fetch_format: 'auto'
+          }
+        })
+
+        setUploadingImage(false)
+
+        if (!uploadResult.success) {
+          throw new Error(uploadResult.error || 'Error al subir la imagen')
+        }
+
+        imageUrl = uploadResult.url
+        
+        toast.success('Imagen subida correctamente', {
+          description: 'Creando producto...',
+          duration: 2000,
+        })
+      }
+
       const dataToSend = {
         title: formData.title,
         price: formData.price,
         description: formData.description,
         category: formData.category,
-        image: formData.image,
+        image: imageUrl,
         stock: formData.stock,
         rating: {
           rate: 4.5, // Valor inicial
@@ -150,13 +197,14 @@ function CreateProduct() {
         })
       }
     } catch (err) {
-      console.error('Error de conexión:', err)
-      toast.error('Error de conexión', {
-        description: 'Verifica que el servidor esté funcionando',
+      console.error('Error:', err)
+      toast.error('Error al procesar', {
+        description: err.message || 'Verifica que el servidor esté funcionando',
         duration: 4000,
       })
     } finally {
       setLoading(false)
+      setUploadingImage(false)
     }
   }
 
@@ -310,10 +358,15 @@ function CreateProduct() {
               </button>
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || uploadingImage}
                 className="flex-1 bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? (
+                {uploadingImage ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Subiendo imagen...
+                  </div>
+                ) : loading ? (
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                     Creando...
