@@ -38,10 +38,9 @@ function LandingPage() {
                 Conoce Más
               </button>
             </div>
-            {/* Image */}
             <div className="lg:w-2/5">
               <img 
-                src="https://senti2.com.es/wp-content/uploads/2023/07/TabletasLimpiadoras_Aplicacion.webp" 
+                src="https://res.cloudinary.com/dzizafv5s/image/upload/v1753223475/mt0tqtpocuxsxenjodws.jpg" 
                 alt="Productos Master Clean" 
                 className="w-full rounded-lg shadow-lg"
               />
@@ -49,21 +48,18 @@ function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Product Detail Section - Pastillas Efervescentes */}
       <section className="py-16 px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             {/* Product Image */}
             <div className="lg:w-1/2">
               <img 
-                src="https://images.ctfassets.net/isq5xwjfoz2m/67JokCqe0V6JSDWqFS8xdo/75d55449d6fa973e4ec55ce879ba3ab7/MP_-_CE_Example_-_Everdrop.jpg?w=2032&h=848&fl=progressive&q=80&fm=jpg" 
+                src="https://res.cloudinary.com/dzizafv5s/image/upload/v1753223824/bo4w4rsud498cce2mlcs.png" 
                 alt="Pastillas Efervescentes Master Clean" 
                 className="w-full rounded-lg shadow-xl"
               />
             </div>
             
-            {/* Product Description */}
             <div className="lg:w-1/2 space-y-6">
               <h2 className="text-4xl font-bold text-gray-800 mb-4">
                 Pastillas Efervescentes de Limpieza
@@ -258,8 +254,6 @@ function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Newsletter Section */}
       <section className="bg-yellow-100 py-16 px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-2xl font-bold mb-4 text-gray-800">
