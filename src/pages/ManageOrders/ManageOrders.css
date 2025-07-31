@@ -1,0 +1,61 @@
+/* Estilos adicionales para la página de gestión de compras */
+
+.manage-orders-container {
+  min-height: calc(100vh - 4rem);
+}
+
+.order-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.order-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.status-badge {
+  transition: all 0.2s ease-in-out;
+}
+
+.verify-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.verify-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
+}
+
+.filter-section {
+  transition: max-height 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .order-card {
+    padding: 1rem;
+  }
+  
+  .status-badge {
+    font-size: 0.75rem;
+  }
+}
+
+/* Animación para loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Mejoras para la paginación */
+.pagination-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  transform: translateY(-1px);
+}

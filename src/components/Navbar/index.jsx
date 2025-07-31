@@ -1,4 +1,4 @@
-import { ShoppingBagIcon, UserIcon, ArrowRightOnRectangleIcon, PlusIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { ShoppingBagIcon, UserIcon, ArrowRightOnRectangleIcon, PlusIcon, Bars3Icon, XMarkIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
 import { ShoppingCartContext } from "../../Context";
 import { NavItem } from "../NavItem";
 import { useContext, useState } from "react";
@@ -181,14 +181,24 @@ const Navbar = () => {
                 </div>
                 
                 {user?.tipoUsuario === 'vendedor' && (
-                  <Link 
-                    to="/crear-producto"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center gap-2 w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                  >
-                    <PlusIcon className="w-4 h-4" />
-                    Crear Producto
-                  </Link>
+                  <>
+                    <Link 
+                      to="/crear-producto"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-2 w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                      <PlusIcon className="w-4 h-4" />
+                      Crear Producto
+                    </Link>
+                    <Link 
+                      to="/gestionar-compras"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-2 w-full px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                    >
+                      <ClipboardDocumentListIcon className="w-4 h-4" />
+                      Gestionar Compras
+                    </Link>
+                  </>
                 )}
                 
                 <button
@@ -258,17 +268,28 @@ const Navbar = () => {
               </span>
             </li>
 
-            {/* Crear Producto (Solo Vendedores) */}
+            {/* Botones para Vendedores */}
             {user?.tipoUsuario === 'vendedor' && (
-              <li className="cursor-pointer text-xs sm:text-sm">
-                <Link 
-                  to="/crear-producto"
-                  className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 transition-colors"
-                >
-                  <PlusIcon className="w-4 h-4" />
-                  <span className="hidden sm:inline">Crear Producto</span>
-                </Link>
-              </li>
+              <>
+                <li className="cursor-pointer text-xs sm:text-sm">
+                  <Link 
+                    to="/crear-producto"
+                    className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 transition-colors"
+                  >
+                    <PlusIcon className="w-4 h-4" />
+                    <span className="hidden sm:inline">Crear</span>
+                  </Link>
+                </li>
+                <li className="cursor-pointer text-xs sm:text-sm">
+                  <Link 
+                    to="/gestionar-compras"
+                    className="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded-full hover:bg-green-700 transition-colors"
+                  >
+                    <ClipboardDocumentListIcon className="w-4 h-4" />
+                    <span className="hidden sm:inline">Gestionar</span>
+                  </Link>
+                </li>
+              </>
             )}
             
             {/* Logout Button */}
